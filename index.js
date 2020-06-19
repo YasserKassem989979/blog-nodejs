@@ -6,6 +6,8 @@ const logger = require('morgan');
 //models
 require('./models/User')
 
+//passport 
+require('./config/passport')
 
 const app = express();
 app.use(logger('dev'));
