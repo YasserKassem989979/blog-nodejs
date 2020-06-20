@@ -6,8 +6,8 @@ const User = mongoose.model("User");
 passport.use(
   new LocalStrategy(
     {
-      usernameField: "email",
-      passwordField: "password",
+      usernameField: "user[email]",
+      passwordField: "user[password]",
     },
     async (email, password, done) => {
       try {

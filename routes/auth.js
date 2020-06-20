@@ -4,7 +4,8 @@ const { secret_key } = require("../config/index");
 const getTokenFromHeaderOrQuerystring = (req) => {
   if (
     req.headers.authorization &&
-    req.headers.authorization.split(" ")[0] === "Bearer"
+    (req.headers.authorization.split(" ")[0] === "Bearer" ||
+      req.headers.authorization.split(" ")[0] === "Token")
   ) {
     return req.headers.authorization.split(" ")[1];
   } else if (req.query && req.query.token) {
