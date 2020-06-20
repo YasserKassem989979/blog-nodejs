@@ -44,6 +44,7 @@ if (!isProduction) {
 mongoose.set("useNewUrlParser", true);
 mongoose.set("useFindAndModify", false);
 mongoose.set("useCreateIndex", true);
+mongoose.set("useUnifiedTopology", true);
 if (isProduction) {
   mongoose.connect(process.env.MONGODB_URI);
 } else {
@@ -76,10 +77,12 @@ if (!isProduction) {
     res.status(err.status || 500);
 
     res.json({
-      errors: {
-        message: err.message,
-        error: err,
-      },
+      errors: [
+        {
+          message: err.message,
+          error: err,
+        },
+      ],
     });
   });
 }
@@ -89,10 +92,12 @@ if (!isProduction) {
 app.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.json({
-    errors: {
-      message: err.message,
-      error: {},
-    },
+    errors: [
+      {
+        message: err.message,
+        error: {},
+      },
+    ],
   });
 });
 

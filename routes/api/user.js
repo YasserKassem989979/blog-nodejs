@@ -9,8 +9,8 @@ router.get("/user", auth.required, async (req, res, next) => {
   try {
     const { auth } = req;
     const user = await User.findById(auth.id);
-    if(!user){
-        return res.sendStatus(401);
+    if (!user) {
+      return res.sendStatus(401);
     }
 
     return res.status(200).json({ user: user.userJson() });
@@ -23,7 +23,8 @@ router.get("/user", auth.required, async (req, res, next) => {
 router.post("/user", async (req, res, next) => {
   try {
     const { username, email, password } = req.body.user;
-    const user = new User({
+
+    var user = new User({
       username,
       email,
     });
@@ -57,6 +58,38 @@ router.post("/user/login", (req, res, next) => {
       return res.status(422).json(info);
     }
   })(req, res, next);
+});
+
+// update
+router.put("/user", auth.required, async (req, res, next) => {
+  try {
+    const { id } = req.auth;
+    const { username, image, bio, email } = req.body.user;
+
+    const db_user = await User.findById(id);
+
+    if (!db_user) {
+      return res.sendStatus(401);
+    }
+
+    if (username) {
+      db_user.username = username;
+    }
+
+    if (email) {
+      db_user.email = email;
+    }
+    if (bio) {
+      db_user.bio = bio;
+    }
+    if (image) {
+      db_user.image = image;
+    }
+    await db_user.save();
+    return res.status(200).json({ user: db_user.userJson() });
+  } catch (err) {
+    next(err);
+  }
 });
 
 module.exports = router;
